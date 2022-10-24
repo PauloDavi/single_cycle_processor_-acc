@@ -12,8 +12,6 @@ module shift_register #(parameter DATA_WIDTH = 8)
     
     reg [DATA_WIDTH - 1:0] buffer;
     
-    assign output_data = (enable) ? buffer[DATA_WIDTH-1] : 1'hz;
-    
     always @ (posedge clk) begin
         if (reset)
             buffer <= {DATA_WIDTH{1'h0}};
@@ -22,4 +20,6 @@ module shift_register #(parameter DATA_WIDTH = 8)
         else if (enable)
             buffer <= {buffer[DATA_WIDTH - 2:0], 1'h0};
 	end
+    
+    assign output_data = (enable) ? buffer[DATA_WIDTH-1] : 1'hz;
 endmodule
