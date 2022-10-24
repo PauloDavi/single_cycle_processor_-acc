@@ -1,0 +1,9 @@
+module control_test;
+  wire [7:0] output_data;
+
+  always #1 clk = ~clk;
+
+  control (clk, output_data);
+  
+  initial #6 $stop;
+endmodule

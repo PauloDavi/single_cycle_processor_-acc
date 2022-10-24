@@ -1,0 +1,32 @@
+module pc_test;
+  reg [6:0] jump_value, pc_count;
+  reg jump_enable, clk, reset;
+  
+  wire [7:0] a_data, b_data;
+
+  always #1 clk = ~clk;
+
+  pc dll(clk, reset, jump_enable, jump_value, pc_count);
+
+  initial begin
+	  clk = 1'b0;
+	  reset = 1'b0;
+	  a_select = 2'b0;
+	  b_select = 2'b0;
+	  data = 8'd100;
+	  destination_select = 2'b0;
+	  load_enable = 1'b1;
+	  
+	  #5
+	  data = 8'd50;
+	  destination_select = 2'b1;
+	  load_enable = 1'b1;
+	  
+	  #10
+	  load_enable = 1'b0;
+	  a_select = 2'b0;
+	  b_select = 2'b1;
+  end
+  
+  initial #20 $stop;
+endmodule

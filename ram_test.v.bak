@@ -1,0 +1,32 @@
+module ram_test;
+  reg [5:0] jump_value;
+  reg jump_enable, clk, reset;
+  
+  wire [5:0] pc_count;
+
+  always #1 clk = ~clk;
+
+  pc dll(clk, reset, jump_enable, jump_value, pc_count);
+
+  initial begin
+	  jump_value = 6'd0;
+	  clk = 1'b0;
+	  reset = 1'b0;
+	  jump_enable = 1'b0;
+
+	  #4
+	  jump_enable = 1'b1;
+	  jump_value = 6'd30;
+	  
+	  #5
+	  jump_enable = 1'b0;
+	  
+	  #8
+	  reset = 1'b1;
+	  
+	  #12
+	  reset = 1'b0;
+  end
+  
+  initial #20 $stop;
+endmodule

@@ -1,0 +1,29 @@
+module reg_file_test;
+  reg [7:0] data, a_data, b_data;
+  reg [1:0] destination_select, a_select, b_select;
+  wire load_enable, clk, reset;
+
+  always clk = ~clk;
+
+  reg_file (data,
+				 clk,
+				 load_enable,
+				 destination_select,
+				 a_select,
+				 b_select,
+				 reset,
+				 a_data,
+				 b_data);
+
+  initial begin
+  data = 8'd100;
+  destination_select = 2'b0;
+  load_enable = 1'b1;
+  
+  #1
+  a_select = 2'b0;
+  b_select = 2'b1;
+  end
+  
+  initial #8 $finish;
+endmodule

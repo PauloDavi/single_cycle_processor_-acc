@@ -1,0 +1,27 @@
+module shift_register_test();
+    reg clk, enable, reset;
+    reg [7:0] data_in;
+    
+    wire output_data;
+    
+    always #1 clk = ~clk;
+    
+    shift_register dll(
+    .data_in(data_in),
+    .clk(clk),
+    .enable(enable),
+    .reset(reset),
+    .output_data(output_data));
+    
+    initial begin
+        clk    = 1'b1;
+        enable = 1'b1;
+        reset  = 1'b0;
+        
+        #2
+        data_in = 8'b10101010;
+        
+        #2 $stop;
+    end
+    
+endmodule

@@ -1,0 +1,42 @@
+module reg_file #(parameter DATA_WIDTH = 8,
+                  parameter REGISTER_ADDR_BITS = 2)
+                 (data,
+                  clk,
+                  load_enable,
+                  destination_select,
+                  a_select,
+                  b_select,
+                  reset,
+                  a_data,
+                  b_data);
+    input [DATA_WIDTH - 1:0] data;
+    input [REGISTER_ADDR_BITS - 1:0] destination_select, a_select, b_select;
+    input load_enable, clk, reset;
+    
+    output reg [DATA_WIDTH - 1:0] a_data, b_data;
+    
+    reg [DATA_WIDTH - 1:0] registers [(2 ** REGISTER_ADDR_BITS):0];
+    
+    integer i;
+    
+    initial begin
+        for (i = 0; i < (2 ** REGISTER_ADDR_BITS); i = i + 1) begin
+            registers[i] <= {DATA_WIDTH{1'b0}};
+        end
+    end
+    
+    always @(posedge clk or posedge reset) begin
+        if (reset) begin
+            for (i = 0; i < (2 ** REGISTER_ADDR_BITS); i = i + 1) begin
+                registers[i] <= {DATA_WIDTH{1'b0}};
+            end
+            end else if (load_enable) begin
+            registers[destination_select] = data;
+        end
+    end
+    
+    always @(registers, a_select, b_select) begin
+        a_data = registers[a_select];
+        b_data = registers[b_select];
+    end
+endmodule

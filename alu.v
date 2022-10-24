@@ -1,0 +1,48 @@
+module alu #(parameter DATA_WIDTH = 8,
+             parameter SELECT_WIDTH = 3)
+            (reg_a,
+             reg_b,
+             select,
+             out,
+             zero_flag,
+             carrier_flag,
+             negative_flag);
+    input [DATA_WIDTH - 1:0] reg_a, reg_b;
+    input [SELECT_WIDTH - 1:0] select;
+    
+    output reg [DATA_WIDTH - 1:0] out;
+    output reg zero_flag, carrier_flag, negative_flag;
+    
+    initial begin
+        out           = {DATA_WIDTH{1'b0}};
+        zero_flag     = 1'b0;
+        carrier_flag  = 1'b0;
+        negative_flag = 1'b0;
+    end
+    
+    always @(*) begin
+        case (select)
+            3'b000: {carrier_flag, out} = reg_a + reg_b;    // ADD
+            3'b001: begin                                   // SUB
+                {carrier_flag, out} = reg_a - reg_b;
+                if (reg_b > reg_a)
+                    negative_flag = 1'b1;
+                else
+                    negative_flag = 1'b0;
+            end
+            3'b010: {carrier_flag, out} = reg_a << reg_b; // MUL2
+            3'b011: {carrier_flag, out} = reg_a >> reg_b; // DIV2
+            3'b100: {carrier_flag, out} = reg_b;          // MOV
+            3'b101: {carrier_flag, out} = reg_a & reg_b;  // AND
+            3'b110: {carrier_flag, out} = reg_a | reg_b;  // OR
+            3'b111: {carrier_flag, out} = reg_a ^ reg_b;  // XOR
+        endcase
+    end
+    
+    always @(out) begin
+        if (out == 0)
+            zero_flag = 1'b1;
+        else
+            zero_flag = 1'b0;
+    end
+endmodule

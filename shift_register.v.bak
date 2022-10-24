@@ -1,0 +1,26 @@
+module shift_register #(parameter DATA_WIDTH = 8)
+                       (data_in,
+                        clk,
+                        enable,
+                        reset,
+                        output_data);
+    input wire [DATA_WIDTH - 1:0] data_in;
+    input wire clk, enable, reset;
+    
+    output reg output_data;
+    
+    integer i;
+    
+    always @ (posedge clk or posedge reset) begin
+        if (reset) begin
+            output_data <= 1'b0;
+        end
+        else begin
+            if (enable) begin
+                for(i = 0; i < DATA_WIDTH; i = i+1) begin
+                    output_data <= data_in[i];
+                end
+            end
+        end
+    end
+endmodule

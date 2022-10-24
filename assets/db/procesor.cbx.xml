@@ -1,0 +1,6 @@
+<?xml version="1.0" ?>
+<LOG_ROOT>
+	<PROJECT NAME="procesor">
+		<CBX_INST_ENTRY INSTANCE_NAME="|procesor|control:control_instance|data_unit:data_unit_instance|ram:ram_instance|altsyncram:ram_data_rtl_0" CBX_FILE_NAME="altsyncram_9lf1.tdf"/>
+	</PROJECT>
+</LOG_ROOT>
